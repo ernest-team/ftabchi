@@ -37,7 +37,7 @@ function tdcli_update_callback(data)
 
     reload()
 
-    tdcli.sendMessage(data.message_.chat_id_, 0, 1, "🔹ربات به روز رسانی شد", 1, "md")
+    tdcli.sendMessage(data.message_.chat_id_, 0, 1, "🔅ُباتِ اِرنِست آپِدِیِتِ شُدِ", 1, "md")
 
   elseif data.message_ and data.message_.content_.text_ and data.message_.content_.text_ == "آپدیت گیت" and data.message_.sender_user_id_ == tonumber(redis:get("tabchi:" .. tabchi_id ..":fullsudo")) then
 
@@ -45,7 +45,7 @@ function tdcli_update_callback(data)
 
     reload()
 
-    tdcli.sendMessage(data.message_.chat_id_, 0, 1, "🔹تمامی فایل ها از گیت هاب دریافت و به روز رسانی شد\nبرای انجام تغییر به روز رسانی کنید", 1, "md")
+    tdcli.sendMessage(data.message_.chat_id_, 0, 1, "🔅تمامی فایل ها از گیت هاب دریافت و به روز رسانی شد\nبرای انجام تغییر به روز رسانی کنید", 1, "md")
 
   end
 
