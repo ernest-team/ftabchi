@@ -1,12 +1,44 @@
 redis = (loadfile "redis.lua")()
 
-io.write("Enter Tabchi ID : ")
+function gettabchiid()
 
-local last = io.read()
+    local i, t, popen = 0, {}, io.popen
 
-io.popen('rm -rf ~/.telegram-cli/tabchi-'..last..' tabchi-'..last..'.lua tabchi-'..last..'.sh tabchi_'..last..'_logs.txt')
+    local pfile = popen('ls')
 
-redis:del('tabchi:'..last..':*')
+	local last = 0
 
-print("Done!\nAll Data/Files Of Tabchi Deleted\nTabchi ID : "..last)
+    for filename in pfile:lines() do
+
+        if filename:match('tabchi%-(%d+)%.lua') and tonumber(filename:match('tabchi%-(%d+)%.lua')) >= last then
+
+			last = tonumber(filename:match('tabchi%-(%d+)%.lua')) + 1
+
+			end		
+
+    end
+
+    return last
+
+end
+
+local last = gettabchiid()
+
+io.write("Auto Detected Tabchi ID : "..last)
+
+io.write("\nEnter Full Sudo ID : ")
+
+local sudo=io.read()
+
+local text,ok = io.open("base.lua",'r'):read('*a'):gsub("TABCHI%-ID",last)
+
+io.open("tabchi-"..last..".lua",'w'):write(text):close()
+
+io.open("tabchi-"..last..".sh",'w'):write("while true; do\n$(dirname $0)/telegram-cli-1222 -p tabchi-"..last.." -s tabchi-"..last..".lua\ndone"):close()
+
+io.popen("chmod 777 tabchi-"..last..".sh")
+
+redis:set('tabchi:'..last..':fullsudo',sudo)
+
+print("Done!\nNew Tabchi Created...\nID : "..last.."\nFull Sudo : "..sudo.."\nRun : ./tabchi-"..last..".sh\nDeveloped by: JoveTeam")
 
